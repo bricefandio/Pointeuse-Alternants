@@ -20,10 +20,4 @@
     <ProjectReference Include="..\Pointeuse.Data\Pointeuse.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Etudiants\" />
-    <Folder Include="Views\Groupes\" />
-    <Folder Include="Views\Promotions\" />
-  </ItemGroup>
-
 </Project>

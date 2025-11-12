@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Pointeuse.WebApp.Models.EtudiantDto>
+
+<h2>Liste des Étudiants</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Groupe</th>
+            <th>Promotion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Nom</td>
+                <td>@e.Prenom</td>
+                <td>@e.GroupeLibelle</td>
+                <td>@e.PromotionLibelle</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Pointeuse.WebApp.Models.GroupeDto>
+
+<h2>Liste des Groupes</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>ID</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var g in Model)
+        {
+            <tr><td>@g.Id</td><td>@g.Type</td></tr>
+        }
+    </tbody>
+</table>

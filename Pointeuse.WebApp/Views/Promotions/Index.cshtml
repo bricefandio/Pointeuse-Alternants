@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Pointeuse.WebApp.Models.PromotionDto>
+
+<h2>Liste des Promotions</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>ID</th><th>Année</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr><td>@p.Id</td><td>@p.Annee</td></tr>
+        }
+    </tbody>
+</table>
