@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Pointeuse.Maui.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Génération de QR Code">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+
+            <Label Text="Créer un étudiant"
+                   FontSize="26"
+                   FontAttributes="Bold" />
+
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                  ColumnDefinitions="Auto,*"
+                  ColumnSpacing="12"
+                  RowSpacing="16">
+
+                <!-- NOM -->
+                <Label Grid.Row="0" Grid.Column="0"
+                       Text="Nom"
+                       VerticalOptions="Center"/>
+
+                <Entry x:Name="NomEntry"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       Placeholder="Dupont"/>
+
+                <!-- PRENOM -->
+                <Label Grid.Row="1" Grid.Column="0"
+                       Text="Prénom"
+                       VerticalOptions="Center"/>
+
+                <Entry x:Name="PrenomEntry"
+                       Grid.Row="1"
+                       Grid.Column="1"
+                       Placeholder="Jean"/>
+
+                <!-- GROUPE -->
+                <Label Grid.Row="2" Grid.Column="0"
+                       Text="Groupe"
+                       VerticalOptions="Center"/>
+
+                <Picker x:Name="GroupePicker"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Title="Sélectionner un groupe"
+                        ItemsSource="{Binding Groupes}"
+                        ItemDisplayBinding="{Binding Type}" />
+
+                <!-- PROMOTION -->
+                <Label Grid.Row="3" Grid.Column="0"
+                       Text="Promotion"
+                       VerticalOptions="Center"/>
+
+                <Picker x:Name="PromotionPicker"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Title="Sélectionner une promotion"
+                        ItemsSource="{Binding Promotions}"
+                        ItemDisplayBinding="{Binding Annee}" />
+
+            </Grid>
+
+            <Button x:Name="GenerateButton"
+                    Text="Générer QR Code"
+                    Clicked="OnGenerateQrCodeClicked" />
+
+            <VerticalStackLayout Spacing="12"
+                                 HorizontalOptions="Center"
+                                 Margin="0,20,0,0">
+
+                <Label x:Name="QrCodeLabel"
+                       Text="QR Code généré"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       IsVisible="False"
+                       HorizontalOptions="Center"/>
+
+                <Image x:Name="QrCodeImage"
+                       WidthRequest="260"
+                       HeightRequest="260"
+                       Aspect="AspectFit"
+                       IsVisible="False"/>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
