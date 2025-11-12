@@ -15,8 +15,4 @@ namespace Pointeuse.Maui.Models
         public int PromotionId { get; set; }
         public string QrCodeHash { get; set; } = string.Empty;
     }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 }

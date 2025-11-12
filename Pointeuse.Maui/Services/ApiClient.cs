@@ -13,7 +13,6 @@ namespace Pointeuse.Maui.Services
             _http = factory.CreateClient("API");
         }
 
-<<<<<<< Updated upstream
         // 🔐 LOGIN
         public async Task<bool> LoginAsync(string username, string password)
         {
@@ -37,24 +36,9 @@ namespace Pointeuse.Maui.Services
 
         // 📦 RÉCUPÉRER ÉTUDIANTS
         public async Task<List<EtudiantDto>> GetEtudiantsAsync()
-=======
-        public async Task<bool> LoginAsync(string username, string password)
->>>>>>> Stashed changes
         {
-            var response = await _http.PostAsJsonAsync("/api/auth/login", new
-            {
-                Username = username,
-                Password = password
-            });
-
-            return response.IsSuccessStatusCode;
-        }
-
-        public async Task<EtudiantDto?> CreateEtudiantAsync(EtudiantDto etudiant)
-        {
-            var response = await _http.PostAsJsonAsync("/api/etudiants", etudiant);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<EtudiantDto>();
+            return await _http.GetFromJsonAsync<List<EtudiantDto>>("/api/etudiants")
+                   ?? new List<EtudiantDto>();
         }
 
         // 📌 GROUPES
@@ -69,12 +53,6 @@ namespace Pointeuse.Maui.Services
         {
             return await _http.GetFromJsonAsync<List<PromotionDto>>("/api/promotions")
                    ?? new List<PromotionDto>();
-        }
-
-        public async Task<List<EtudiantDto>> GetEtudiantsAsync()
-        {
-            return await _http.GetFromJsonAsync<List<EtudiantDto>>("/api/etudiants")
-                   ?? new List<EtudiantDto>();
         }
     }
 }
