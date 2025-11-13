@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pointeuse.Data;
+using Pointeuse.Data.Models;
 
 namespace Pointeuse.API.Controllers
 {
@@ -9,25 +10,38 @@ namespace Pointeuse.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public AuthController(ApplicationDbContext context) => _context = context;
+
+        public AuthController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         // POST /api/auth/login
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto dto)
+        public async Task<IActionResult> Login([FromBody] Utilisateur login)
         {
+            if (login == null ||
+                string.IsNullOrWhiteSpace(login.Username) ||
+                string.IsNullOrWhiteSpace(login.Password))
+            {
+                return BadRequest(new { message = "Champs manquants." });
+            }
+
             var user = await _context.Utilisateurs
-                .FirstOrDefaultAsync(u => u.Username == dto.Username && u.Password == dto.Password);
+                .FirstOrDefaultAsync(u => u.Username == login.Username &&
+                                          u.Password == login.Password);
 
             if (user == null)
+            {
                 return Unauthorized(new { message = "Identifiants invalides." });
+            }
 
-            return Ok(new { message = "Connexion réussie !" });
+            // Réponse UNIQUE pour Web, MAUI, Desktop
+            return Ok(new
+            {
+                message = "Connexion réussie",
+                username = user.Username
+            });
         }
-    }
-
-    public class LoginDto
-    {
-        public string Username { get; set; } = "";
-        public string Password { get; set; } = "";
     }
 }

@@ -26,5 +26,11 @@ namespace Pointeuse.WebApp.Services
             var list = await _http.GetFromJsonAsync<List<PointageDto>>("/api/pointages");
             return list ?? new List<PointageDto>();
         }
+        public async Task<bool> LoginAsync(string username, string password)
+        {
+            var response = await _http.PostAsJsonAsync("/api/auth/login", new { Username = username, Password = password });
+            return response.IsSuccessStatusCode;
+        }
+
     }
 }

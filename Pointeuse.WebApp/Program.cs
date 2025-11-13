@@ -1,14 +1,9 @@
-﻿using Pointeuse.WebApp.Services; // Assurez-vous que ce namespace est correct !
+﻿using Pointeuse.WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // 🔧 Ajout du support MVC (avec contrôleurs et vues)
 builder.Services.AddControllersWithViews();
-
-// 🔗 Suppression de la connexion DbContext/SQL Server (car ce projet est maintenant un client)
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 // ✅ Configuration du HttpClient pour consommer l’API
 builder.Services.AddHttpClient("API", client =>
@@ -20,12 +15,14 @@ builder.Services.AddHttpClient("API", client =>
 // Injection du ApiClient custom (pour encapsuler les appels HTTP)
 builder.Services.AddScoped<ApiClient>();
 
-// 🗑️ Suppression de la configuration Swagger/API Explorer (car ce n'est plus un projet API)
-// builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen(c =>
-// {
-//     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pointeuse API", Version = "v1" });
-// });
+// ⚙️ Activer les services de session (IMPORTANT)
+builder.Services.AddSession(options =>
+{
+    // Configurer le timeout de la session (par exemple, 20 minutes)
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
 var app = builder.Build();
@@ -34,16 +31,7 @@ var app = builder.Build();
 // Configuration du pipeline HTTP
 // ============================
 
-if (app.Environment.IsDevelopment())
-{
-    // En environnement de dev, nous pouvons supprimer les middlewares Swagger
-    // app.UseSwagger();
-    // app.UseSwaggerUI(c =>
-    // {
-    //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pointeuse API v1");
-    // });
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
@@ -54,11 +42,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// 📍 AJOUT : Utiliser le middleware de session (Doit être avant UseAuthorization)
+app.UseSession();
+
 app.UseAuthorization();
 
-// 📍 Route par défaut modifiée pour pointer vers un contrôleur/action plus pertinent (ex: Etudiants/Index)
+// 📍 Route par défaut modifiée pour pointer vers le contrôleur d'authentification
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Etudiants}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();
